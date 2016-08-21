@@ -5,6 +5,8 @@
  */
 package proyecto_ejercicio7;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author GABRIEL
@@ -33,8 +35,8 @@ public class Principal extends javax.swing.JFrame {
         txtYears = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         txtMonto = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        cmdBorrar = new javax.swing.JButton();
+        cmdCalcular = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -47,6 +49,12 @@ public class Principal extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel2.setText("Cuántos años lleva el empleado en la empresa?");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 68, -1, -1));
+
+        txtYears.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtYearsKeyTyped(evt);
+            }
+        });
         jPanel1.add(txtYears, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 63, 80, 30));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
@@ -61,21 +69,21 @@ public class Principal extends javax.swing.JFrame {
         });
         jPanel1.add(txtMonto, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 170, 170, 30));
 
-        jButton1.setText("Borrar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        cmdBorrar.setText("Borrar");
+        cmdBorrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                cmdBorrarActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 80, 30));
+        jPanel1.add(cmdBorrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 170, 80, 30));
 
-        jButton2.setText("Calcular");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        cmdCalcular.setText("Calcular");
+        cmdCalcular.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                cmdCalcularActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 80, 30));
+        jPanel1.add(cmdCalcular, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, 80, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -93,17 +101,52 @@ public class Principal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void cmdBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdBorrarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        txtYears.setText("");
+        txtMonto.setText("");
+        txtYears.requestFocusInWindow();
+    }//GEN-LAST:event_cmdBorrarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void cmdCalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmdCalcularActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        if (txtYears.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Campo vacío. Por favor llénelo", "ERROR", JOptionPane.ERROR_MESSAGE);
+            txtYears.requestFocusInWindow();
+        }
+        else if (txtYears.getText().equals(".")) {
+            JOptionPane.showMessageDialog(this, "No puede operar puntos", "ERROR", JOptionPane.ERROR_MESSAGE);
+            txtYears.setText("");
+            txtYears.requestFocusInWindow();
+        }
+        else if (Double.parseDouble(txtYears.getText())<=1) {
+            JOptionPane.showMessageDialog(this, "El empleado debe tener varios años en la empresa", "INFO", JOptionPane.INFORMATION_MESSAGE);
+            txtYears.setText("");
+            txtYears.requestFocusInWindow();
+        }
+        else {
+            double nYears, totalBono;
+            nYears = Double.parseDouble(txtYears.getText());
+            totalBono = (nYears - 1) * 120000 + 100000;
+            txtMonto.setText(""+totalBono);
+        }
+    }//GEN-LAST:event_cmdCalcularActionPerformed
 
     private void txtMontoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMontoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtMontoActionPerformed
+
+    private void txtYearsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtYearsKeyTyped
+        // TODO add your handling code here:
+        char c = evt.getKeyChar(); 
+        if(!Character.isDigit(c) && c != '.') { 
+              getToolkit().beep(); 
+              evt.consume(); 
+        }
+        if (c == '.' && txtYears.getText().contains(".")) {
+            evt.consume(); 
+        }
+    }//GEN-LAST:event_txtYearsKeyTyped
 
     /**
      * @param args the command line arguments
@@ -141,8 +184,8 @@ public class Principal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton cmdBorrar;
+    private javax.swing.JButton cmdCalcular;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
